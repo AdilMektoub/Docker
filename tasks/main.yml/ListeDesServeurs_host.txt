@@ -1,0 +1,4 @@
+[web]
+192.100.10.1 (si par default =! root "ansible_user" comment se logué)
+
+[mysql]
