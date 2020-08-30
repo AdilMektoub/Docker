@@ -1,0 +1,25 @@
+---
+  #defini les outils à installés
+tasks:
+    #installation de ... sur site de ansible "module Index" "packaging module"
+    #je vais definir l'ensemble des taches
+    #donc on a besoin name et update_cache (pour avant lancer la commande apt-get update)
+    - name: installation ...
+      apt: name=... update_cache=yes
+    #pour les autres installations pas besoin de mettre update.cache car il a déjà fait
+    - name: installation ...
+      apt: name=...
+    #ETC.....
+    #on lance sur la cmder "ansible-playbook -i hosts playbook.yml" (-i pour préciser le fichier hosts à utliliser)
+
+    # MAIS c'est trop long donc nouvelle méthode trouver
+    # pour chaque élements de notre boucle tu installes (state = derniere version)
+    apt: name={{ item }} update_cache=yes state=latest 
+    with_items: 
+      -zsh
+      -vim
+    #etc...
+
+
+
+...

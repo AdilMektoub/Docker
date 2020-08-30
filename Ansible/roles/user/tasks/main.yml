@@ -1,0 +1,26 @@
+---
+    #crée un nouveau utilisateur "site ansible - module index - system module"
+    - name: création d'un user
+    #quand user est definie
+      when: user is defined
+      user: name={{ user }} comment="c'est moi" shell=/usr/bin/zsh
+  #se connecte à notre utilisateur avec SSH
+    - name: Ajout de la clef SSH
+    #quand user est défini
+      when: user is defined
+  #copié automatiquement la clef dans le systeme "site ansible - authorized keys"
+      authorized_key: user={{ user }} key="{{ lookup('file', '~/.ssh/id_rsa.pub')}}"
+  #on lance "ansible-playbook -i hosts playbook.yml"
+  #eviter de ce connecter a chaque fois en sudo
+  - name: "{{ user }} devient sudoers"
+    when: user is defined
+    # je transfere mon fichier sudoers.j2 à mon SERVEUR
+    template: src=templates/sudoers.j2 dest=/etc/sudoers.d/{{ user }}-sudoer validate='visudo -cf %s'
+
+
+
+
+
+
+
+...

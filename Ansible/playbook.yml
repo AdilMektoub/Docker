@@ -1,0 +1,39 @@
+---
+#############################################################
+# création de recettes pour automatiser installation des outils
+# configuration des serveurs web
+# se connecter au serveur
+#nom de la liste 
+- name: Installation des serveurs web
+#nom du groupe
+  hosts: web
+# login par default par l'hebergeur
+  remote_user: root
+  #création variable pour utilisateur ou autre
+  vars:
+    user: adil
+  
+
+##############################################################
+
+
+#utilisation des roles placés dans roles
+    roles:
+      - outils 
+      - user
+      #sur galaxy.ansible.com "system/roles"tu peux lancé des roles mais attention à verifier (on parle de configuration serveur)
+      - selinux
+
+# j'inclue des fichiers qui vont contenir des variables et ce fichier va depender de l'OS (system exploitation)
+- name: Add the OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml" 
+
+#MySQL
+-- name: Install the mysql packages in Redhat derivatives
+  yum: name={{ item }} state=installed 
+  with_items:
+    - "{{ mysql_pkgs }}"
+  when: ansible_os_family == 'RedHat'
+# configuration des serveurs DB
+  # finit par 3 points
+  ...
